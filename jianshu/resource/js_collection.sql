@@ -3,7 +3,7 @@ CREATE TABLE `js_collection` (
 	`collection_id` INT (11) NULL DEFAULT NULL COMMENT '专题编号',
 	`article_url` VARCHAR (255) CHARACTER
 SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章URL，相对',
- `article_title` VARCHAR (128) CHARACTER
+ `article_title` VARCHAR (255) CHARACTER
 SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文章标题',
  `img_url` VARCHAR (255) CHARACTER
 SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '封面图片URL，绝对',
