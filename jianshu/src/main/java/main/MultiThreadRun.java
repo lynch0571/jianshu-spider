@@ -1,5 +1,7 @@
 package main;
 
+import service.CollectionService;
+
 
 public class MultiThreadRun extends Thread {
 
@@ -20,7 +22,8 @@ public class MultiThreadRun extends Thread {
 
 	@Override
 	public void run() {
-		App.doJob(collectionId);
+		CollectionService cs=new CollectionService();
+		cs.doJob(collectionId);
 	}
 
 }
