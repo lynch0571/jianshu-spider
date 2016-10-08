@@ -9,12 +9,12 @@
     <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
     <result column="author_url" property="authorUrl" jdbcType="VARCHAR" />
     <result column="author_name" property="authorName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="published_time" property="publishedTime" jdbcType="TIMESTAMP" />
     <result column="reading_amount" property="readingAmount" jdbcType="INTEGER" />
     <result column="comment_amount" property="commentAmount" jdbcType="INTEGER" />
     <result column="like_amount" property="likeAmount" jdbcType="INTEGER" />
     <result column="reward_amount" property="rewardAmount" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, collection_id, article_url, article_title, img_url, author_url, author_name, 
-    published_time, reading_amount, comment_amount, like_amount, reward_amount, create_time
+    create_time, published_time, reading_amount, comment_amount, like_amount, reward_amount
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="model.CollectionExample" >
     select
@@ -111,14 +111,14 @@
   <insert id="insert" parameterType="model.Collection" >
     insert into js_collection (id, collection_id, article_url, 
       article_title, img_url, author_url, 
-      author_name, published_time, reading_amount, 
-      comment_amount, like_amount, reward_amount, 
-      create_time)
+      author_name, create_time, published_time, 
+      reading_amount, comment_amount, like_amount, 
+      reward_amount)
     values (#{id,jdbcType=BIGINT}, #{collectionId,jdbcType=INTEGER}, #{articleUrl,jdbcType=VARCHAR}, 
       #{articleTitle,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{authorUrl,jdbcType=VARCHAR}, 
-      #{authorName,jdbcType=VARCHAR}, #{publishedTime,jdbcType=TIMESTAMP}, #{readingAmount,jdbcType=INTEGER}, 
-      #{commentAmount,jdbcType=INTEGER}, #{likeAmount,jdbcType=INTEGER}, #{rewardAmount,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{authorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{publishedTime,jdbcType=TIMESTAMP}, 
+      #{readingAmount,jdbcType=INTEGER}, #{commentAmount,jdbcType=INTEGER}, #{likeAmount,jdbcType=INTEGER}, 
+      #{rewardAmount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="model.Collection" >
     insert into js_collection
@@ -144,6 +144,9 @@
       <if test="authorName != null" >
         author_name,
       </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
       <if test="publishedTime != null" >
         published_time,
       </if>
@@ -158,9 +161,6 @@
       </if>
       <if test="rewardAmount != null" >
         reward_amount,
-      </if>
-      <if test="createTime != null" >
-        create_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -185,6 +185,9 @@
       <if test="authorName != null" >
         #{authorName,jdbcType=VARCHAR},
       </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="publishedTime != null" >
         #{publishedTime,jdbcType=TIMESTAMP},
       </if>
@@ -199,9 +202,6 @@
       </if>
       <if test="rewardAmount != null" >
         #{rewardAmount,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -235,6 +235,9 @@
       <if test="record.authorName != null" >
         author_name = #{record.authorName,jdbcType=VARCHAR},
       </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.publishedTime != null" >
         published_time = #{record.publishedTime,jdbcType=TIMESTAMP},
       </if>
@@ -250,9 +253,6 @@
       <if test="record.rewardAmount != null" >
         reward_amount = #{record.rewardAmount,jdbcType=INTEGER},
       </if>
-      <if test="record.createTime != null" >
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -267,12 +267,12 @@
       img_url = #{record.imgUrl,jdbcType=VARCHAR},
       author_url = #{record.authorUrl,jdbcType=VARCHAR},
       author_name = #{record.authorName,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
       published_time = #{record.publishedTime,jdbcType=TIMESTAMP},
       reading_amount = #{record.readingAmount,jdbcType=INTEGER},
       comment_amount = #{record.commentAmount,jdbcType=INTEGER},
       like_amount = #{record.likeAmount,jdbcType=INTEGER},
-      reward_amount = #{record.rewardAmount,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+      reward_amount = #{record.rewardAmount,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -298,6 +298,9 @@
       <if test="authorName != null" >
         author_name = #{authorName,jdbcType=VARCHAR},
       </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="publishedTime != null" >
         published_time = #{publishedTime,jdbcType=TIMESTAMP},
       </if>
@@ -313,9 +316,6 @@
       <if test="rewardAmount != null" >
         reward_amount = #{rewardAmount,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -327,12 +327,12 @@
       img_url = #{imgUrl,jdbcType=VARCHAR},
       author_url = #{authorUrl,jdbcType=VARCHAR},
       author_name = #{authorName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       published_time = #{publishedTime,jdbcType=TIMESTAMP},
       reading_amount = #{readingAmount,jdbcType=INTEGER},
       comment_amount = #{commentAmount,jdbcType=INTEGER},
       like_amount = #{likeAmount,jdbcType=INTEGER},
-      reward_amount = #{rewardAmount,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      reward_amount = #{rewardAmount,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -17,6 +17,8 @@ public class Collection {
 
     private String authorName;
 
+    private Date createTime;
+
     private Date publishedTime;
 
     private Integer readingAmount;
@@ -26,8 +28,6 @@ public class Collection {
     private Integer likeAmount;
 
     private Integer rewardAmount;
-
-    private Date createTime;
 
     public Long getId() {
         return id;
@@ -85,6 +85,14 @@ public class Collection {
         this.authorName = authorName;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     public Date getPublishedTime() {
         return publishedTime;
     }
@@ -125,24 +133,16 @@ public class Collection {
         this.rewardAmount = rewardAmount;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
 	@Override
 	public String toString() {
 		return "Collection [id=" + id + ", collectionId=" + collectionId
 				+ ", articleUrl=" + articleUrl + ", articleTitle="
 				+ articleTitle + ", imgUrl=" + imgUrl + ", authorUrl="
-				+ authorUrl + ", authorName=" + authorName + ", publishedTime="
-				+ publishedTime + ", readingAmount=" + readingAmount
-				+ ", commentAmount=" + commentAmount + ", likeAmount="
-				+ likeAmount + ", rewardAmount=" + rewardAmount
-				+ ", createTime=" + createTime + "]";
+				+ authorUrl + ", authorName=" + authorName + ", createTime="
+				+ createTime + ", publishedTime=" + publishedTime
+				+ ", readingAmount=" + readingAmount + ", commentAmount="
+				+ commentAmount + ", likeAmount=" + likeAmount
+				+ ", rewardAmount=" + rewardAmount + "]";
 	}
     
 }
