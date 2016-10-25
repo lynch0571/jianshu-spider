@@ -162,7 +162,7 @@ public class CollectionParser {
 	}
 	
 	public static List<Collection> getCollectionArticleList(int collectionId,int page) {
-		String relativeUrl = "/collections/"+collectionId+"/notes?page="+page;
+		String relativeUrl = "/collections/"+collectionId+"/notes?order_by=likes_count&page="+page;//按热度排序
 		String url= baseUrl + relativeUrl;
 		Long start=System.currentTimeMillis();
 		Document doc = HtmlUtil.getHtmlDocument(url);
@@ -173,6 +173,9 @@ public class CollectionParser {
 		for (int i = 0; i < es.size(); i++) {
 			Element e = es.get(i);
 			Collection c = CollectionParser.getCollectionByElement(collectionId,e);
+			if(c.getLikeAmount()<1000){
+				break;	//小于1000个赞就结束
+			}
 			cs.add(c);
 		}
 		lg.info("Result: {}",cs);
