@@ -7,8 +7,6 @@ public class Collection {
 
     private String name;
 
-    private String collectionId;
-
     private String url;
 
     private String admin;
@@ -41,14 +39,6 @@ public class Collection {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCollectionId() {
-        return collectionId;
-    }
-
-    public void setCollectionId(String collectionId) {
-        this.collectionId = collectionId;
     }
 
     public String getUrl() {

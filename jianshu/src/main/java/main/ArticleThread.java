@@ -3,7 +3,7 @@ package main;
 import service.ArticleService;
 
 
-public class MultiThreadRun extends Thread {
+public class ArticleThread extends Thread {
 
 	private int collectionId;
 	
@@ -15,7 +15,7 @@ public class MultiThreadRun extends Thread {
 		this.collectionId = collectionId;
 	}
 
-	public MultiThreadRun(int collectionId) {
+	public ArticleThread(int collectionId) {
 		super();
 		this.collectionId = collectionId;
 	}

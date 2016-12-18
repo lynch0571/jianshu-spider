@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="model.Collection" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="collection_id" property="collectionId" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="admin" property="admin" jdbcType="VARCHAR" />
     <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
@@ -76,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, collection_id, url, admin, img_url, article_count, fans_count, last_collect_time, 
-    create_time, update_time
+    id, name, url, admin, img_url, article_count, fans_count, last_collect_time, create_time, 
+    update_time
   </sql>
   <sql id="Blob_Column_List" >
     description
@@ -131,16 +130,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="model.Collection" >
-    insert into collection (id, name, collection_id, 
-      url, admin, img_url, 
-      article_count, fans_count, last_collect_time, 
-      create_time, update_time, description
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{collectionId,jdbcType=VARCHAR}, 
-      #{url,jdbcType=VARCHAR}, #{admin,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, 
-      #{articleCount,jdbcType=INTEGER}, #{fansCount,jdbcType=INTEGER}, #{lastCollectTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR}
-      )
+    insert into collection (id, name, url, 
+      admin, img_url, article_count, 
+      fans_count, last_collect_time, create_time, 
+      update_time, description)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{admin,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{articleCount,jdbcType=INTEGER}, 
+      #{fansCount,jdbcType=INTEGER}, #{lastCollectTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="model.Collection" >
     insert into collection
@@ -150,9 +147,6 @@
       </if>
       <if test="name != null" >
         name,
-      </if>
-      <if test="collectionId != null" >
-        collection_id,
       </if>
       <if test="url != null" >
         url,
@@ -188,9 +182,6 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="collectionId != null" >
-        #{collectionId,jdbcType=VARCHAR},
       </if>
       <if test="url != null" >
         #{url,jdbcType=VARCHAR},
@@ -236,9 +227,6 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.collectionId != null" >
-        collection_id = #{record.collectionId,jdbcType=VARCHAR},
-      </if>
       <if test="record.url != null" >
         url = #{record.url,jdbcType=VARCHAR},
       </if>
@@ -275,7 +263,6 @@
     update collection
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      collection_id = #{record.collectionId,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
       admin = #{record.admin,jdbcType=VARCHAR},
       img_url = #{record.imgUrl,jdbcType=VARCHAR},
@@ -293,7 +280,6 @@
     update collection
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      collection_id = #{record.collectionId,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
       admin = #{record.admin,jdbcType=VARCHAR},
       img_url = #{record.imgUrl,jdbcType=VARCHAR},
@@ -311,9 +297,6 @@
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="collectionId != null" >
-        collection_id = #{collectionId,jdbcType=VARCHAR},
       </if>
       <if test="url != null" >
         url = #{url,jdbcType=VARCHAR},
@@ -348,7 +331,6 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="model.Collection" >
     update collection
     set name = #{name,jdbcType=VARCHAR},
-      collection_id = #{collectionId,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       admin = #{admin,jdbcType=VARCHAR},
       img_url = #{imgUrl,jdbcType=VARCHAR},
@@ -363,7 +345,6 @@
   <update id="updateByPrimaryKey" parameterType="model.Collection" >
     update collection
     set name = #{name,jdbcType=VARCHAR},
-      collection_id = #{collectionId,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       admin = #{admin,jdbcType=VARCHAR},
       img_url = #{imgUrl,jdbcType=VARCHAR},
