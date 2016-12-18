@@ -2,19 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="dao.CollectionMapper" >
   <resultMap id="BaseResultMap" type="model.Collection" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="collection_id" property="collectionId" jdbcType="INTEGER" />
-    <result column="article_url" property="articleUrl" jdbcType="VARCHAR" />
-    <result column="article_title" property="articleTitle" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="collection_id" property="collectionId" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="admin" property="admin" jdbcType="VARCHAR" />
     <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
-    <result column="author_url" property="authorUrl" jdbcType="VARCHAR" />
-    <result column="author_name" property="authorName" jdbcType="VARCHAR" />
+    <result column="article_count" property="articleCount" jdbcType="INTEGER" />
+    <result column="fans_count" property="fansCount" jdbcType="INTEGER" />
+    <result column="last_collect_time" property="lastCollectTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="published_time" property="publishedTime" jdbcType="TIMESTAMP" />
-    <result column="reading_amount" property="readingAmount" jdbcType="INTEGER" />
-    <result column="comment_amount" property="commentAmount" jdbcType="INTEGER" />
-    <result column="like_amount" property="likeAmount" jdbcType="INTEGER" />
-    <result column="reward_amount" property="rewardAmount" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="model.Collection" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,16 +76,21 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, collection_id, article_url, article_title, img_url, author_url, author_name, 
-    create_time, published_time, reading_amount, comment_amount, like_amount, reward_amount
+    id, name, collection_id, url, admin, img_url, article_count, fans_count, last_collect_time, 
+    create_time, update_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="model.CollectionExample" >
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="model.CollectionExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from js_collection
+    ,
+    <include refid="Blob_Column_List" />
+    from collection
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,247 +98,280 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="model.CollectionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from collection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from js_collection
-    where id = #{id,jdbcType=BIGINT}
+    ,
+    <include refid="Blob_Column_List" />
+    from collection
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from js_collection
-    where id = #{id,jdbcType=BIGINT}
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from collection
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="model.CollectionExample" >
-    delete from js_collection
+    delete from collection
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="model.Collection" >
-    insert into js_collection (id, collection_id, article_url, 
-      article_title, img_url, author_url, 
-      author_name, create_time, published_time, 
-      reading_amount, comment_amount, like_amount, 
-      reward_amount)
-    values (#{id,jdbcType=BIGINT}, #{collectionId,jdbcType=INTEGER}, #{articleUrl,jdbcType=VARCHAR}, 
-      #{articleTitle,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{authorUrl,jdbcType=VARCHAR}, 
-      #{authorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{publishedTime,jdbcType=TIMESTAMP}, 
-      #{readingAmount,jdbcType=INTEGER}, #{commentAmount,jdbcType=INTEGER}, #{likeAmount,jdbcType=INTEGER}, 
-      #{rewardAmount,jdbcType=INTEGER})
+    insert into collection (id, name, collection_id, 
+      url, admin, img_url, 
+      article_count, fans_count, last_collect_time, 
+      create_time, update_time, description
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{collectionId,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{admin,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, 
+      #{articleCount,jdbcType=INTEGER}, #{fansCount,jdbcType=INTEGER}, #{lastCollectTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="model.Collection" >
-    insert into js_collection
+    insert into collection
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
+      <if test="name != null" >
+        name,
+      </if>
       <if test="collectionId != null" >
         collection_id,
       </if>
-      <if test="articleUrl != null" >
-        article_url,
+      <if test="url != null" >
+        url,
       </if>
-      <if test="articleTitle != null" >
-        article_title,
+      <if test="admin != null" >
+        admin,
       </if>
       <if test="imgUrl != null" >
         img_url,
       </if>
-      <if test="authorUrl != null" >
-        author_url,
+      <if test="articleCount != null" >
+        article_count,
       </if>
-      <if test="authorName != null" >
-        author_name,
+      <if test="fansCount != null" >
+        fans_count,
+      </if>
+      <if test="lastCollectTime != null" >
+        last_collect_time,
       </if>
       <if test="createTime != null" >
         create_time,
       </if>
-      <if test="publishedTime != null" >
-        published_time,
+      <if test="updateTime != null" >
+        update_time,
       </if>
-      <if test="readingAmount != null" >
-        reading_amount,
-      </if>
-      <if test="commentAmount != null" >
-        comment_amount,
-      </if>
-      <if test="likeAmount != null" >
-        like_amount,
-      </if>
-      <if test="rewardAmount != null" >
-        reward_amount,
+      <if test="description != null" >
+        description,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=BIGINT},
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="collectionId != null" >
-        #{collectionId,jdbcType=INTEGER},
+        #{collectionId,jdbcType=VARCHAR},
       </if>
-      <if test="articleUrl != null" >
-        #{articleUrl,jdbcType=VARCHAR},
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
       </if>
-      <if test="articleTitle != null" >
-        #{articleTitle,jdbcType=VARCHAR},
+      <if test="admin != null" >
+        #{admin,jdbcType=VARCHAR},
       </if>
       <if test="imgUrl != null" >
         #{imgUrl,jdbcType=VARCHAR},
       </if>
-      <if test="authorUrl != null" >
-        #{authorUrl,jdbcType=VARCHAR},
+      <if test="articleCount != null" >
+        #{articleCount,jdbcType=INTEGER},
       </if>
-      <if test="authorName != null" >
-        #{authorName,jdbcType=VARCHAR},
+      <if test="fansCount != null" >
+        #{fansCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastCollectTime != null" >
+        #{lastCollectTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="publishedTime != null" >
-        #{publishedTime,jdbcType=TIMESTAMP},
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="readingAmount != null" >
-        #{readingAmount,jdbcType=INTEGER},
-      </if>
-      <if test="commentAmount != null" >
-        #{commentAmount,jdbcType=INTEGER},
-      </if>
-      <if test="likeAmount != null" >
-        #{likeAmount,jdbcType=INTEGER},
-      </if>
-      <if test="rewardAmount != null" >
-        #{rewardAmount,jdbcType=INTEGER},
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="model.CollectionExample" resultType="java.lang.Integer" >
-    select count(*) from js_collection
+    select count(*) from collection
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update js_collection
+    update collection
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=BIGINT},
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.collectionId != null" >
-        collection_id = #{record.collectionId,jdbcType=INTEGER},
+        collection_id = #{record.collectionId,jdbcType=VARCHAR},
       </if>
-      <if test="record.articleUrl != null" >
-        article_url = #{record.articleUrl,jdbcType=VARCHAR},
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
       </if>
-      <if test="record.articleTitle != null" >
-        article_title = #{record.articleTitle,jdbcType=VARCHAR},
+      <if test="record.admin != null" >
+        admin = #{record.admin,jdbcType=VARCHAR},
       </if>
       <if test="record.imgUrl != null" >
         img_url = #{record.imgUrl,jdbcType=VARCHAR},
       </if>
-      <if test="record.authorUrl != null" >
-        author_url = #{record.authorUrl,jdbcType=VARCHAR},
+      <if test="record.articleCount != null" >
+        article_count = #{record.articleCount,jdbcType=INTEGER},
       </if>
-      <if test="record.authorName != null" >
-        author_name = #{record.authorName,jdbcType=VARCHAR},
+      <if test="record.fansCount != null" >
+        fans_count = #{record.fansCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastCollectTime != null" >
+        last_collect_time = #{record.lastCollectTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.publishedTime != null" >
-        published_time = #{record.publishedTime,jdbcType=TIMESTAMP},
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.readingAmount != null" >
-        reading_amount = #{record.readingAmount,jdbcType=INTEGER},
-      </if>
-      <if test="record.commentAmount != null" >
-        comment_amount = #{record.commentAmount,jdbcType=INTEGER},
-      </if>
-      <if test="record.likeAmount != null" >
-        like_amount = #{record.likeAmount,jdbcType=INTEGER},
-      </if>
-      <if test="record.rewardAmount != null" >
-        reward_amount = #{record.rewardAmount,jdbcType=INTEGER},
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update collection
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      collection_id = #{record.collectionId,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      admin = #{record.admin,jdbcType=VARCHAR},
+      img_url = #{record.imgUrl,jdbcType=VARCHAR},
+      article_count = #{record.articleCount,jdbcType=INTEGER},
+      fans_count = #{record.fansCount,jdbcType=INTEGER},
+      last_collect_time = #{record.lastCollectTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update js_collection
-    set id = #{record.id,jdbcType=BIGINT},
-      collection_id = #{record.collectionId,jdbcType=INTEGER},
-      article_url = #{record.articleUrl,jdbcType=VARCHAR},
-      article_title = #{record.articleTitle,jdbcType=VARCHAR},
+    update collection
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      collection_id = #{record.collectionId,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      admin = #{record.admin,jdbcType=VARCHAR},
       img_url = #{record.imgUrl,jdbcType=VARCHAR},
-      author_url = #{record.authorUrl,jdbcType=VARCHAR},
-      author_name = #{record.authorName,jdbcType=VARCHAR},
+      article_count = #{record.articleCount,jdbcType=INTEGER},
+      fans_count = #{record.fansCount,jdbcType=INTEGER},
+      last_collect_time = #{record.lastCollectTime,jdbcType=TIMESTAMP},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      published_time = #{record.publishedTime,jdbcType=TIMESTAMP},
-      reading_amount = #{record.readingAmount,jdbcType=INTEGER},
-      comment_amount = #{record.commentAmount,jdbcType=INTEGER},
-      like_amount = #{record.likeAmount,jdbcType=INTEGER},
-      reward_amount = #{record.rewardAmount,jdbcType=INTEGER}
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="model.Collection" >
-    update js_collection
+    update collection
     <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="collectionId != null" >
-        collection_id = #{collectionId,jdbcType=INTEGER},
+        collection_id = #{collectionId,jdbcType=VARCHAR},
       </if>
-      <if test="articleUrl != null" >
-        article_url = #{articleUrl,jdbcType=VARCHAR},
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
       </if>
-      <if test="articleTitle != null" >
-        article_title = #{articleTitle,jdbcType=VARCHAR},
+      <if test="admin != null" >
+        admin = #{admin,jdbcType=VARCHAR},
       </if>
       <if test="imgUrl != null" >
         img_url = #{imgUrl,jdbcType=VARCHAR},
       </if>
-      <if test="authorUrl != null" >
-        author_url = #{authorUrl,jdbcType=VARCHAR},
+      <if test="articleCount != null" >
+        article_count = #{articleCount,jdbcType=INTEGER},
       </if>
-      <if test="authorName != null" >
-        author_name = #{authorName,jdbcType=VARCHAR},
+      <if test="fansCount != null" >
+        fans_count = #{fansCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastCollectTime != null" >
+        last_collect_time = #{lastCollectTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="publishedTime != null" >
-        published_time = #{publishedTime,jdbcType=TIMESTAMP},
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="readingAmount != null" >
-        reading_amount = #{readingAmount,jdbcType=INTEGER},
-      </if>
-      <if test="commentAmount != null" >
-        comment_amount = #{commentAmount,jdbcType=INTEGER},
-      </if>
-      <if test="likeAmount != null" >
-        like_amount = #{likeAmount,jdbcType=INTEGER},
-      </if>
-      <if test="rewardAmount != null" >
-        reward_amount = #{rewardAmount,jdbcType=INTEGER},
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="model.Collection" >
+    update collection
+    set name = #{name,jdbcType=VARCHAR},
+      collection_id = #{collectionId,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      admin = #{admin,jdbcType=VARCHAR},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      article_count = #{articleCount,jdbcType=INTEGER},
+      fans_count = #{fansCount,jdbcType=INTEGER},
+      last_collect_time = #{lastCollectTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="model.Collection" >
-    update js_collection
-    set collection_id = #{collectionId,jdbcType=INTEGER},
-      article_url = #{articleUrl,jdbcType=VARCHAR},
-      article_title = #{articleTitle,jdbcType=VARCHAR},
+    update collection
+    set name = #{name,jdbcType=VARCHAR},
+      collection_id = #{collectionId,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      admin = #{admin,jdbcType=VARCHAR},
       img_url = #{imgUrl,jdbcType=VARCHAR},
-      author_url = #{authorUrl,jdbcType=VARCHAR},
-      author_name = #{authorName,jdbcType=VARCHAR},
+      article_count = #{articleCount,jdbcType=INTEGER},
+      fans_count = #{fansCount,jdbcType=INTEGER},
+      last_collect_time = #{lastCollectTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      published_time = #{publishedTime,jdbcType=TIMESTAMP},
-      reading_amount = #{readingAmount,jdbcType=INTEGER},
-      comment_amount = #{commentAmount,jdbcType=INTEGER},
-      like_amount = #{likeAmount,jdbcType=INTEGER},
-      reward_amount = #{rewardAmount,jdbcType=INTEGER}
-    where id = #{id,jdbcType=BIGINT}
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

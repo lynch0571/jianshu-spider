@@ -3,62 +3,68 @@ package model;
 import java.util.Date;
 
 public class Collection {
-    private Long id;
+    private Integer id;
 
-    private Integer collectionId;
+    private String name;
 
-    private String articleUrl;
+    private String collectionId;
 
-    private String articleTitle;
+    private String url;
+
+    private String admin;
 
     private String imgUrl;
 
-    private String authorUrl;
+    private Integer articleCount;
 
-    private String authorName;
+    private Integer fansCount;
+
+    private Date lastCollectTime;
 
     private Date createTime;
 
-    private Date publishedTime;
+    private Date updateTime;
 
-    private Integer readingAmount;
+    private String description;
 
-    private Integer commentAmount;
-
-    private Integer likeAmount;
-
-    private Integer rewardAmount;
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Integer getCollectionId() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCollectionId() {
         return collectionId;
     }
 
-    public void setCollectionId(Integer collectionId) {
+    public void setCollectionId(String collectionId) {
         this.collectionId = collectionId;
     }
 
-    public String getArticleUrl() {
-        return articleUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setArticleUrl(String articleUrl) {
-        this.articleUrl = articleUrl;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getArticleTitle() {
-        return articleTitle;
+    public String getAdmin() {
+        return admin;
     }
 
-    public void setArticleTitle(String articleTitle) {
-        this.articleTitle = articleTitle;
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
 
     public String getImgUrl() {
@@ -69,20 +75,28 @@ public class Collection {
         this.imgUrl = imgUrl;
     }
 
-    public String getAuthorUrl() {
-        return authorUrl;
+    public Integer getArticleCount() {
+        return articleCount;
     }
 
-    public void setAuthorUrl(String authorUrl) {
-        this.authorUrl = authorUrl;
+    public void setArticleCount(Integer articleCount) {
+        this.articleCount = articleCount;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public Integer getFansCount() {
+        return fansCount;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setFansCount(Integer fansCount) {
+        this.fansCount = fansCount;
+    }
+
+    public Date getLastCollectTime() {
+        return lastCollectTime;
+    }
+
+    public void setLastCollectTime(Date lastCollectTime) {
+        this.lastCollectTime = lastCollectTime;
     }
 
     public Date getCreateTime() {
@@ -93,56 +107,19 @@ public class Collection {
         this.createTime = createTime;
     }
 
-    public Date getPublishedTime() {
-        return publishedTime;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setPublishedTime(Date publishedTime) {
-        this.publishedTime = publishedTime;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public Integer getReadingAmount() {
-        return readingAmount;
+    public String getDescription() {
+        return description;
     }
 
-    public void setReadingAmount(Integer readingAmount) {
-        this.readingAmount = readingAmount;
+    public void setDescription(String description) {
+        this.description = description;
     }
-
-    public Integer getCommentAmount() {
-        return commentAmount;
-    }
-
-    public void setCommentAmount(Integer commentAmount) {
-        this.commentAmount = commentAmount;
-    }
-
-    public Integer getLikeAmount() {
-        return likeAmount;
-    }
-
-    public void setLikeAmount(Integer likeAmount) {
-        this.likeAmount = likeAmount;
-    }
-
-    public Integer getRewardAmount() {
-        return rewardAmount;
-    }
-
-    public void setRewardAmount(Integer rewardAmount) {
-        this.rewardAmount = rewardAmount;
-    }
-
-	@Override
-	public String toString() {
-		return "Collection [id=" + id + ", collectionId=" + collectionId
-				+ ", articleUrl=" + articleUrl + ", articleTitle="
-				+ articleTitle + ", imgUrl=" + imgUrl + ", authorUrl="
-				+ authorUrl + ", authorName=" + authorName + ", createTime="
-				+ createTime + ", publishedTime=" + publishedTime
-				+ ", readingAmount=" + readingAmount + ", commentAmount="
-				+ commentAmount + ", likeAmount=" + likeAmount
-				+ ", rewardAmount=" + rewardAmount + "]";
-	}
-    
 }
