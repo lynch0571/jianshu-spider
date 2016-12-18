@@ -20,7 +20,7 @@ public class CollectionService {
         Long start = System.currentTimeMillis();
         lg.info("{} start.", Thread.currentThread().getName());
         // 10次未爬到数据，则停止
-        int page = 25;
+        int page = 1;
         int i = 0;
         while (i < 10) {
             if (!crawl(page++)) {
