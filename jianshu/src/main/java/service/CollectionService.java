@@ -42,18 +42,22 @@ public class CollectionService {
             CollectionExample example = new CollectionExample();
             example.createCriteria().andIdEqualTo(a.getId());
             List<Collection> collectionList = mapper.selectByExample(example);
-            if (collectionList.size() > 0) {
-                if (mapper.updateByExample(a, example) == 1) {
-                    lg.info("Update data successfully.{}", a);
+            try {
+                if (collectionList.size() > 0) {
+                    if (mapper.updateByExample(a, example) == 1) {
+                        lg.info("Update data successfully.{}", a);
+                    } else {
+                        lg.error("Failed to update data.{}", a);
+                    }
                 } else {
-                    lg.error("Failed to update data.{}", a);
+                    if (mapper.insert(a) == 1) {
+                        lg.info("Insert data successfully.{}", a);
+                    } else {
+                        lg.error("Failed to insert data.{}", a);
+                    }
                 }
-            } else {
-                if (mapper.insert(a) == 1) {
-                    lg.info("Insert data successfully.{}", a);
-                } else {
-                    lg.error("Failed to insert data.{}", a);
-                }
+            } catch (Exception e) {
+                lg.error("Insert or Update data:{} occurred Exception:{}", a, e);
             }
         }
         sqlSession.close();

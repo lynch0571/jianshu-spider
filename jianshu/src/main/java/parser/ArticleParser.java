@@ -126,20 +126,20 @@ public class ArticleParser {
     }
 
     public static Article getArticleByElement(int articleId, Element e) {
-        Article c = new Article();
-        c.setCreateTime(new Date());
-        c.setCollectionId(articleId);
-        c.setArticleUrl(getArticleUrl(e));
-        c.setArticleTitle(getArticleTitle(e));
-        c.setImgUrl(getImgUrl(e));
-        c.setAuthorUrl(getAuthorUrl(e));
-        c.setAuthorName(getAuthorName(e));
-        c.setPublishedTime(getPublishedTime(e));
-        c.setReadingAmount(getReadingAmount(e));
-        c.setCommentAmount(getCommentAmount(e));
-        c.setLikeAmount(getLikeAmount(e));
-        c.setRewardAmount(getRewardAmount(e));
-        return c;
+        Article a = new Article();
+        a.setCreateTime(new Date());
+        a.setCollectionId(articleId);
+        a.setArticleUrl(getArticleUrl(e));
+        a.setArticleTitle(getArticleTitle(e));
+        a.setImgUrl(getImgUrl(e));
+        a.setAuthorUrl(getAuthorUrl(e));
+        a.setAuthorName(getAuthorName(e));
+        a.setPublishedTime(getPublishedTime(e));
+        a.setReadingAmount(getReadingAmount(e));
+        a.setCommentAmount(getCommentAmount(e));
+        a.setLikeAmount(getLikeAmount(e));
+        a.setRewardAmount(getRewardAmount(e));
+        return a;
     }
 
     public static List<Article> getArticleList(int articleId, int page) {

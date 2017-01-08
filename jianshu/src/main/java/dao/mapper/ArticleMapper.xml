@@ -15,6 +15,7 @@
     <result column="comment_amount" property="commentAmount" jdbcType="INTEGER" />
     <result column="like_amount" property="likeAmount" jdbcType="INTEGER" />
     <result column="reward_amount" property="rewardAmount" jdbcType="INTEGER" />
+    <result column="is_collected" property="isCollected" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,7 +77,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, collection_id, article_url, article_title, img_url, author_url, author_name, 
-    create_time, published_time, reading_amount, comment_amount, like_amount, reward_amount
+    create_time, published_time, reading_amount, comment_amount, like_amount, reward_amount, 
+    is_collected
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="model.ArticleExample" >
     select
@@ -113,12 +115,12 @@
       article_title, img_url, author_url, 
       author_name, create_time, published_time, 
       reading_amount, comment_amount, like_amount, 
-      reward_amount)
+      reward_amount, is_collected)
     values (#{id,jdbcType=BIGINT}, #{collectionId,jdbcType=INTEGER}, #{articleUrl,jdbcType=VARCHAR}, 
       #{articleTitle,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{authorUrl,jdbcType=VARCHAR}, 
       #{authorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{publishedTime,jdbcType=TIMESTAMP}, 
       #{readingAmount,jdbcType=INTEGER}, #{commentAmount,jdbcType=INTEGER}, #{likeAmount,jdbcType=INTEGER}, 
-      #{rewardAmount,jdbcType=INTEGER})
+      #{rewardAmount,jdbcType=INTEGER}, #{isCollected,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="model.Article" >
     insert into article
@@ -162,6 +164,9 @@
       <if test="rewardAmount != null" >
         reward_amount,
       </if>
+      <if test="isCollected != null" >
+        is_collected,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -202,6 +207,9 @@
       </if>
       <if test="rewardAmount != null" >
         #{rewardAmount,jdbcType=INTEGER},
+      </if>
+      <if test="isCollected != null" >
+        #{isCollected,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -253,6 +261,9 @@
       <if test="record.rewardAmount != null" >
         reward_amount = #{record.rewardAmount,jdbcType=INTEGER},
       </if>
+      <if test="record.isCollected != null" >
+        is_collected = #{record.isCollected,jdbcType=TINYINT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -272,7 +283,8 @@
       reading_amount = #{record.readingAmount,jdbcType=INTEGER},
       comment_amount = #{record.commentAmount,jdbcType=INTEGER},
       like_amount = #{record.likeAmount,jdbcType=INTEGER},
-      reward_amount = #{record.rewardAmount,jdbcType=INTEGER}
+      reward_amount = #{record.rewardAmount,jdbcType=INTEGER},
+      is_collected = #{record.isCollected,jdbcType=TINYINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -316,6 +328,9 @@
       <if test="rewardAmount != null" >
         reward_amount = #{rewardAmount,jdbcType=INTEGER},
       </if>
+      <if test="isCollected != null" >
+        is_collected = #{isCollected,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -332,7 +347,8 @@
       reading_amount = #{readingAmount,jdbcType=INTEGER},
       comment_amount = #{commentAmount,jdbcType=INTEGER},
       like_amount = #{likeAmount,jdbcType=INTEGER},
-      reward_amount = #{rewardAmount,jdbcType=INTEGER}
+      reward_amount = #{rewardAmount,jdbcType=INTEGER},
+      is_collected = #{isCollected,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

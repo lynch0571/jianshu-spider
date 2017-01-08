@@ -3,6 +3,7 @@ package main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import service.ArticleService;
 import service.CollectionService;
 import utils.PropertiesUtil;
 
@@ -11,8 +12,14 @@ public class JianShuAppRun {
     private static String collectionIds = PropertiesUtil.getValueByKey("config/spider.properties", "collectionIds");
 
     public static void main(String[] args) {
-        // crawlArticle();
-        crawlCollection();
+//        crawlMyArticle();
+        crawlArticle();
+        // crawlCollection();
+    }
+    
+    private static void crawlMyArticle() {
+        ArticleService cs=new ArticleService();
+        cs.doJob(287647);   //千赞专题ID
     }
 
     private static void crawlCollection() {

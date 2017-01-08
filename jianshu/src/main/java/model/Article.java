@@ -29,6 +29,8 @@ public class Article {
 
     private Integer rewardAmount;
 
+    private Byte isCollected;
+
     public Long getId() {
         return id;
     }
@@ -132,4 +134,21 @@ public class Article {
     public void setRewardAmount(Integer rewardAmount) {
         this.rewardAmount = rewardAmount;
     }
+
+    public Byte getIsCollected() {
+        return isCollected;
+    }
+
+    public void setIsCollected(Byte isCollected) {
+        this.isCollected = isCollected;
+    }
+
+    @Override
+    public String toString() {
+        return "Article [id=" + id + ", collectionId=" + collectionId + ", articleUrl=" + articleUrl + ", articleTitle=" + articleTitle + ", imgUrl=" + imgUrl
+                + ", authorUrl=" + authorUrl + ", authorName=" + authorName + ", createTime=" + createTime + ", publishedTime=" + publishedTime
+                + ", readingAmount=" + readingAmount + ", commentAmount=" + commentAmount + ", likeAmount=" + likeAmount + ", rewardAmount=" + rewardAmount
+                + ", isCollected=" + isCollected + "]";
+    }
+    
 }

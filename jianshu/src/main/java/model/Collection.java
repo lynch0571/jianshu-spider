@@ -13,6 +13,8 @@ public class Collection {
 
     private String imgUrl;
 
+    private String description;
+
     private Integer articleCount;
 
     private Integer fansCount;
@@ -22,8 +24,6 @@ public class Collection {
     private Date createTime;
 
     private Date updateTime;
-
-    private String description;
 
     public Integer getId() {
         return id;
@@ -63,6 +63,14 @@ public class Collection {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getArticleCount() {
@@ -105,11 +113,11 @@ public class Collection {
         this.updateTime = updateTime;
     }
 
-    public String getDescription() {
-        return description;
+    @Override
+    public String toString() {
+        return "Collection [id=" + id + ", name=" + name + ", url=" + url + ", admin=" + admin + ", imgUrl=" + imgUrl + ", description=" + description
+                + ", articleCount=" + articleCount + ", fansCount=" + fansCount + ", lastCollectTime=" + lastCollectTime + ", createTime=" + createTime
+                + ", updateTime=" + updateTime + "]";
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    
 }

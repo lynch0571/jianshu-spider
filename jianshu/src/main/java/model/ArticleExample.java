@@ -934,6 +934,66 @@ public class ArticleExample {
             addCriterion("reward_amount not between", value1, value2, "rewardAmount");
             return (Criteria) this;
         }
+
+        public Criteria andIsCollectedIsNull() {
+            addCriterion("is_collected is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedIsNotNull() {
+            addCriterion("is_collected is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedEqualTo(Byte value) {
+            addCriterion("is_collected =", value, "isCollected");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedNotEqualTo(Byte value) {
+            addCriterion("is_collected <>", value, "isCollected");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedGreaterThan(Byte value) {
+            addCriterion("is_collected >", value, "isCollected");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedGreaterThanOrEqualTo(Byte value) {
+            addCriterion("is_collected >=", value, "isCollected");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedLessThan(Byte value) {
+            addCriterion("is_collected <", value, "isCollected");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedLessThanOrEqualTo(Byte value) {
+            addCriterion("is_collected <=", value, "isCollected");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedIn(List<Byte> values) {
+            addCriterion("is_collected in", values, "isCollected");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedNotIn(List<Byte> values) {
+            addCriterion("is_collected not in", values, "isCollected");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedBetween(Byte value1, Byte value2) {
+            addCriterion("is_collected between", value1, value2, "isCollected");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCollectedNotBetween(Byte value1, Byte value2) {
+            addCriterion("is_collected not between", value1, value2, "isCollected");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

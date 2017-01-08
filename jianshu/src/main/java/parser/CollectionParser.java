@@ -1,6 +1,5 @@
 package parser;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,7 +83,7 @@ public class CollectionParser {
         try {
             num = Integer.valueOf(str.substring(0, str.indexOf("篇")));
         } catch (Exception e2) {
-            lg.error("Exception:", e2);
+            lg.warn("Exception:", e2);
         }
         return num;
     }
@@ -110,7 +109,13 @@ public class CollectionParser {
 
     private static Integer getCollectionId(Document e) {
         String str = e.select(".top-articles a").attr("href");
-        return Integer.valueOf(str.substring(str.indexOf("/collections/") + "/collections/".length(), str.indexOf("/notes?")));
+        Integer num = null;
+        try {
+            num = Integer.valueOf(str.substring(str.indexOf("collections/") + "collections/".length(), str.indexOf("/notes?")));
+        } catch (Exception e2) {
+            lg.warn("Exception:", e2);
+        }
+        return num;
     }
 
     public static List<Collection> getCollectionList(int page) {
@@ -123,7 +128,12 @@ public class CollectionParser {
         List<Collection> cs = new ArrayList<Collection>();
         for (int i = 0; i < es.size(); i++) {
             Element e = es.get(i);
-            Collection c = CollectionParser.getCollectionByElement(e);
+            Collection c = null;
+            try {
+                c = CollectionParser.getCollectionByElement(e);
+            } catch (Exception e1) {
+                lg.error("Parse the Page:{}, Num:{}, Exception:{}", page, i, e1);
+            }
             cs.add(c);
         }
         lg.info("Result: {}", cs);

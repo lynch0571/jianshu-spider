@@ -7,14 +7,12 @@
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="admin" property="admin" jdbcType="VARCHAR" />
     <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="article_count" property="articleCount" jdbcType="INTEGER" />
     <result column="fans_count" property="fansCount" jdbcType="INTEGER" />
     <result column="last_collect_time" property="lastCollectTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="model.Collection" extends="BaseResultMap" >
-    <result column="description" property="description" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,28 +73,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, url, admin, img_url, article_count, fans_count, last_collect_time, create_time, 
-    update_time
+    id, name, url, admin, img_url, description, article_count, fans_count, last_collect_time, 
+    create_time, update_time
   </sql>
-  <sql id="Blob_Column_List" >
-    description
-  </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="model.CollectionExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from collection
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="model.CollectionExample" >
     select
     <if test="distinct" >
@@ -111,11 +90,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from collection
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -131,13 +108,13 @@
   </delete>
   <insert id="insert" parameterType="model.Collection" >
     insert into collection (id, name, url, 
-      admin, img_url, article_count, 
-      fans_count, last_collect_time, create_time, 
-      update_time, description)
+      admin, img_url, description, 
+      article_count, fans_count, last_collect_time, 
+      create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{admin,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{articleCount,jdbcType=INTEGER}, 
-      #{fansCount,jdbcType=INTEGER}, #{lastCollectTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR})
+      #{admin,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{articleCount,jdbcType=INTEGER}, #{fansCount,jdbcType=INTEGER}, #{lastCollectTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="model.Collection" >
     insert into collection
@@ -157,6 +134,9 @@
       <if test="imgUrl != null" >
         img_url,
       </if>
+      <if test="description != null" >
+        description,
+      </if>
       <if test="articleCount != null" >
         article_count,
       </if>
@@ -171,9 +151,6 @@
       </if>
       <if test="updateTime != null" >
         update_time,
-      </if>
-      <if test="description != null" >
-        description,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -192,6 +169,9 @@
       <if test="imgUrl != null" >
         #{imgUrl,jdbcType=VARCHAR},
       </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
       <if test="articleCount != null" >
         #{articleCount,jdbcType=INTEGER},
       </if>
@@ -206,9 +186,6 @@
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="description != null" >
-        #{description,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -236,6 +213,9 @@
       <if test="record.imgUrl != null" >
         img_url = #{record.imgUrl,jdbcType=VARCHAR},
       </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
       <if test="record.articleCount != null" >
         article_count = #{record.articleCount,jdbcType=INTEGER},
       </if>
@@ -251,27 +231,7 @@
       <if test="record.updateTime != null" >
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.description != null" >
-        description = #{record.description,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update collection
-    set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      url = #{record.url,jdbcType=VARCHAR},
-      admin = #{record.admin,jdbcType=VARCHAR},
-      img_url = #{record.imgUrl,jdbcType=VARCHAR},
-      article_count = #{record.articleCount,jdbcType=INTEGER},
-      fans_count = #{record.fansCount,jdbcType=INTEGER},
-      last_collect_time = #{record.lastCollectTime,jdbcType=TIMESTAMP},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      description = #{record.description,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -283,6 +243,7 @@
       url = #{record.url,jdbcType=VARCHAR},
       admin = #{record.admin,jdbcType=VARCHAR},
       img_url = #{record.imgUrl,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
       article_count = #{record.articleCount,jdbcType=INTEGER},
       fans_count = #{record.fansCount,jdbcType=INTEGER},
       last_collect_time = #{record.lastCollectTime,jdbcType=TIMESTAMP},
@@ -307,6 +268,9 @@
       <if test="imgUrl != null" >
         img_url = #{imgUrl,jdbcType=VARCHAR},
       </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
       <if test="articleCount != null" >
         article_count = #{articleCount,jdbcType=INTEGER},
       </if>
@@ -322,24 +286,7 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="description != null" >
-        description = #{description,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="model.Collection" >
-    update collection
-    set name = #{name,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      admin = #{admin,jdbcType=VARCHAR},
-      img_url = #{imgUrl,jdbcType=VARCHAR},
-      article_count = #{articleCount,jdbcType=INTEGER},
-      fans_count = #{fansCount,jdbcType=INTEGER},
-      last_collect_time = #{lastCollectTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      description = #{description,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="model.Collection" >
@@ -348,6 +295,7 @@
       url = #{url,jdbcType=VARCHAR},
       admin = #{admin,jdbcType=VARCHAR},
       img_url = #{imgUrl,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
       article_count = #{articleCount,jdbcType=INTEGER},
       fans_count = #{fansCount,jdbcType=INTEGER},
       last_collect_time = #{lastCollectTime,jdbcType=TIMESTAMP},
