@@ -22,11 +22,11 @@ public class ArticleParser {
     private static Logger lg = LoggerFactory.getLogger(ArticleParser.class);
 
     public static String getArticleUrl(Element e) {
-        return e.select(".title a").attr("href");
+        return e.select(".title").attr("href");
     }
 
     public static String getArticleTitle(Element e) {
-        return e.select(".title a").text();
+        return e.select(".title").text();
     }
 
     public static String getImgUrl(Element e) {
@@ -34,11 +34,11 @@ public class ArticleParser {
     }
 
     public static String getAuthorUrl(Element e) {
-        return e.select(".author-name").attr("href");
+        return e.select(".author .name a").attr("href");
     }
 
     public static String getAuthorName(Element e) {
-        return e.select(".author-name").text();
+        return e.select(".author .name a").text();
     }
 
     public static Date getPublishedTime(Element e) {
@@ -47,18 +47,11 @@ public class ArticleParser {
 
     public static int getReadingAmount(Element e) {
         int amount = 0;
-        String type = "阅读";
-        Elements es = e.select(".list-footer a");
-        for (int i = 0; i < es.size(); i++) {
-            String s = es.get(i).text();
-            if (s != null && s.contains(type)) {
-                s = s.substring(s.indexOf(type) + type.length(), s.length()).trim();
-                try {
-                    amount = Integer.valueOf(s);
-                } catch (NumberFormatException e1) {
-                    amount = 0;
-                    e1.printStackTrace();
-                }
+        String type = "ic-list-read";
+        Elements es = e.select(".meta a");
+        for (Element ele : es) {
+            if (ele.toString().contains(type)) {
+                amount = Integer.valueOf(ele.text());
                 break;
             }
         }
@@ -67,18 +60,11 @@ public class ArticleParser {
 
     public static int getCommentAmount(Element e) {
         int amount = 0;
-        String type = "评论";
-        Elements es = e.select(".list-footer a");
-        for (int i = 0; i < es.size(); i++) {
-            String s = es.get(i).text();
-            if (s != null && s.contains(type)) {
-                s = s.substring(s.indexOf(type) + type.length(), s.length()).trim();
-                try {
-                    amount = Integer.valueOf(s);
-                } catch (NumberFormatException e1) {
-                    amount = 0;
-                    e1.printStackTrace();
-                }
+        String type = "ic-list-comments";
+        Elements es = e.select(".meta a");
+        for (Element ele : es) {
+            if (ele.toString().contains(type)) {
+                amount = Integer.valueOf(ele.text());
                 break;
             }
         }
@@ -87,18 +73,11 @@ public class ArticleParser {
 
     public static int getLikeAmount(Element e) {
         int amount = 0;
-        String type = "喜欢";
-        Elements es = e.select(".list-footer span");
-        for (int i = 0; i < es.size(); i++) {
-            String s = es.get(i).text();
-            if (s != null && s.contains(type)) {
-                s = s.substring(s.indexOf(type) + type.length(), s.length()).trim();
-                try {
-                    amount = Integer.valueOf(s);
-                } catch (NumberFormatException e1) {
-                    amount = 0;
-                    e1.printStackTrace();
-                }
+        String type = "ic-list-like";
+        Elements es = e.select(".meta a");
+        for (Element ele : es) {
+            if (ele.toString().contains(type)) {
+                amount = Integer.valueOf(ele.text());
                 break;
             }
         }
@@ -107,28 +86,21 @@ public class ArticleParser {
 
     public static int getRewardAmount(Element e) {
         int amount = 0;
-        String type = "打赏";
-        Elements es = e.select(".list-footer span");
-        for (int i = 0; i < es.size(); i++) {
-            String s = es.get(i).text();
-            if (s != null && s.contains(type)) {
-                s = s.substring(s.indexOf(type) + type.length(), s.length()).trim();
-                try {
-                    amount = Integer.valueOf(s);
-                } catch (NumberFormatException e1) {
-                    amount = 0;
-                    e1.printStackTrace();
-                }
+        String type = "ic-list-money";
+        Elements es = e.select(".meta a");
+        for (Element ele : es) {
+            if (ele.toString().contains(type)) {
+                amount = Integer.valueOf(ele.text());
                 break;
             }
         }
         return amount;
     }
 
-    public static Article getArticleByElement(int articleId, Element e) {
+    public static Article getArticleByElement(String collectionId, Element e) {
         Article a = new Article();
         a.setCreateTime(new Date());
-        a.setCollectionId(articleId);
+        a.setCollectionId(collectionId);
         a.setArticleUrl(getArticleUrl(e));
         a.setArticleTitle(getArticleTitle(e));
         a.setImgUrl(getImgUrl(e));
@@ -142,18 +114,18 @@ public class ArticleParser {
         return a;
     }
 
-    public static List<Article> getArticleList(int articleId, int page) {
-        String relativeUrl = "/collections/" + articleId + "/notes?order_by=likes_count&page=" + page;// 按热度排序
+    public static List<Article> getArticleList(String collectionId, int page) {
+        String relativeUrl = "/c/" + collectionId + "?order_by=top&page=" + page;// 按热度排序
         String url = baseUrl + relativeUrl;
         Long start = System.currentTimeMillis();
         Document doc = HtmlUtil.getHtmlDocument(url);
-        Elements es = doc.select(".article-list li");
+        Elements es = doc.select("#list-container li");
         lg.info("Catched {} elements in {}ms from URL: {}.", es.size(), System.currentTimeMillis() - start, url);
 
         List<Article> cs = new ArrayList<Article>();
         for (int i = 0; i < es.size(); i++) {
             Element e = es.get(i);
-            Article c = ArticleParser.getArticleByElement(articleId, e);
+            Article c = ArticleParser.getArticleByElement(collectionId, e);
             if (c.getLikeAmount() < 1000) {
                 break; // 小于1000个赞就结束
             }

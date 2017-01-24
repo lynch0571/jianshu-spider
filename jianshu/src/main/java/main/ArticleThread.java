@@ -5,17 +5,17 @@ import service.ArticleService;
 
 public class ArticleThread extends Thread {
 
-	private int collectionId;
+	private String collectionId;
 	
-	public int getCollectionId() {
+	public String getCollectionId() {
 		return collectionId;
 	}
 
-	public void setCollectionId(int collectionId) {
+	public void setCollectionId(String collectionId) {
 		this.collectionId = collectionId;
 	}
 
-	public ArticleThread(int collectionId) {
+	public ArticleThread(String collectionId) {
 		super();
 		this.collectionId = collectionId;
 	}

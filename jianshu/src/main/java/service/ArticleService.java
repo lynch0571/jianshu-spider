@@ -18,7 +18,7 @@ public class ArticleService {
     private Logger lg = LoggerFactory.getLogger(ArticleService.class);
     private static String myCollectionId = PropertiesUtil.getValueByKey("config/spider.properties", "myCollectionId");
 
-    public void doJob(int collectionId) {
+    public void doJob(String collectionId) {
         Long start = System.currentTimeMillis();
         lg.info("{} start.", Thread.currentThread().getName());
         // 10次未爬到数据，则停止
@@ -33,7 +33,7 @@ public class ArticleService {
         lg.info("{} end.Totle time:{}s, collectionId:{}, page:{}", Thread.currentThread().getName(), (end - start) / 1000.0, collectionId, page);
     }
 
-    private boolean crawl(int collectionId, int page) {
+    private boolean crawl(String collectionId, int page) {
         List<Article> as = ArticleParser.getArticleList(collectionId, page);
         if (as.size() == 0) {
             return false;

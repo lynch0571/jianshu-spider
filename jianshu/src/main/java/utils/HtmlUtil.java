@@ -26,7 +26,8 @@ public class HtmlUtil {
 
     private static Document getDoc(String url) {
         try {
-            return Jsoup.connect(url).get();
+            return Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36")
+                    .get();
         } catch (SocketTimeoutException se) {
             return null;
         } catch (IOException e) {

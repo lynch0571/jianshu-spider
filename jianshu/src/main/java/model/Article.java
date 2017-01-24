@@ -5,7 +5,7 @@ import java.util.Date;
 public class Article {
     private Long id;
 
-    private Integer collectionId;
+    private String collectionId;
 
     private String articleUrl;
 
@@ -39,11 +39,11 @@ public class Article {
         this.id = id;
     }
 
-    public Integer getCollectionId() {
+    public String getCollectionId() {
         return collectionId;
     }
 
-    public void setCollectionId(Integer collectionId) {
+    public void setCollectionId(String collectionId) {
         this.collectionId = collectionId;
     }
 

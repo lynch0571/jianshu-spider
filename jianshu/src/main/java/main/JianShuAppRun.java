@@ -12,14 +12,14 @@ public class JianShuAppRun {
     private static String collectionIds = PropertiesUtil.getValueByKey("config/spider.properties", "collectionIds");
 
     public static void main(String[] args) {
-//        crawlMyArticle();
-        crawlArticle();
+        crawlMyArticle();
+//        crawlArticle();
         // crawlCollection();
     }
     
     private static void crawlMyArticle() {
         ArticleService cs=new ArticleService();
-        cs.doJob(287647);   //千赞专题ID
+        cs.doJob("032a478c3dbf");   //千赞专题ID
     }
 
     private static void crawlCollection() {
@@ -36,7 +36,7 @@ public class JianShuAppRun {
             lg.info("Collection id:{}", collectionIds);
         }
         for (int i = 0; i < ids.length; i++) {
-            ArticleThread thread = new ArticleThread(Integer.valueOf(ids[i]));
+            ArticleThread thread = new ArticleThread(ids[i]);
             thread.setName("Thread-" + ids[i]);
             thread.start();
         }
