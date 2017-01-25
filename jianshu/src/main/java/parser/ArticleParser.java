@@ -31,7 +31,7 @@ public class ArticleParser {
             }
         }
         if (amount == 0) {
-            lg.warn("The {} amount is {},e:{}", type, amount, e);
+            lg.warn("The {} amount is {}", type, amount);
         }
         return amount;
     }
@@ -40,6 +40,7 @@ public class ArticleParser {
         Article a = new Article();
         a.setCreateTime(new Date());
         a.setCollectionId(collectionId);
+        a.setIsCollected(Byte.valueOf("0"));
         a.setArticleUrl(e.select(".title").attr("href"));
         a.setArticleTitle(e.select(".title").text());
         a.setImgUrl(e.select("img").attr("src"));

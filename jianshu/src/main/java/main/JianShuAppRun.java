@@ -10,16 +10,17 @@ import utils.PropertiesUtil;
 public class JianShuAppRun {
     private static Logger lg = LoggerFactory.getLogger(JianShuAppRun.class);
     private static String collectionIds = PropertiesUtil.getValueByKey("config/spider.properties", "collectionIds");
+    private static String myCollectionId = PropertiesUtil.getValueByKey("config/spider.properties", "myCollectionId");
 
     public static void main(String[] args) {
+        crawlArticle();
         crawlMyArticle();
-//        crawlArticle();
         // crawlCollection();
     }
-    
+
     private static void crawlMyArticle() {
-        ArticleService cs=new ArticleService();
-        cs.doJob("032a478c3dbf");   //千赞专题ID
+        ArticleService cs = new ArticleService();
+        cs.doJob(myCollectionId);
     }
 
     private static void crawlCollection() {
