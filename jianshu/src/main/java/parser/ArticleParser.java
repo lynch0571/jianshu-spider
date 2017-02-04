@@ -26,7 +26,15 @@ public class ArticleParser {
         Elements es = e.select(".meta a");
         for (Element ele : es) {
             if (ele.toString().contains(type)) {
-                amount = Integer.valueOf(ele.text());
+                amount = Integer.valueOf(ele.text().trim());
+                break;
+            }
+        }
+        
+        Elements es2 = e.select(".meta span");
+        for (Element ele : es2) {
+            if (ele.toString().contains(type)) {
+                amount = Integer.valueOf(ele.text().trim());
                 break;
             }
         }

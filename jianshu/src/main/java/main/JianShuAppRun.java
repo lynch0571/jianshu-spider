@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import service.ArticleService;
-import service.CollectionService;
 import utils.PropertiesUtil;
 
 public class JianShuAppRun {
@@ -15,17 +14,11 @@ public class JianShuAppRun {
     public static void main(String[] args) {
         crawlArticle();
         crawlMyArticle();
-        // crawlCollection();
     }
 
     private static void crawlMyArticle() {
         ArticleService cs = new ArticleService();
         cs.doJob(myCollectionId);
-    }
-
-    private static void crawlCollection() {
-        CollectionService cs = new CollectionService();
-        cs.doJob();
     }
 
     private static void crawlArticle() {

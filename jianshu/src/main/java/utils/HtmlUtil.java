@@ -19,6 +19,7 @@ public class HtmlUtil {
                 break;
             } else {
                 lg.warn("The document is null on {} times", i + 1);
+                doc = new Document("");
             }
         }
         return doc;
