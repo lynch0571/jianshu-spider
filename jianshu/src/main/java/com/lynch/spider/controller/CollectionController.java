@@ -3,6 +3,8 @@
  */
 package com.lynch.spider.controller;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +41,20 @@ public class CollectionController {
     @Autowired
     private ResponseDto responseDto;
 
-    @RequestMapping(value = "craw/{id}", method = RequestMethod.GET)
-    private ResponseDto crawlMyArticle(@PathVariable("id") String id) {
+    @RequestMapping(value = "craw/{idStr}", method = RequestMethod.GET)
+    private ResponseDto crawlMyArticle(@PathVariable("idStr") String idStr) {
         long t1 = System.currentTimeMillis();
-        if (StringUtils.isEmpty(id)) {
+        if (StringUtils.isEmpty(idStr)) {
             responseDto.setResult("专题Id为空");
-        } else if ("qianzan".equals(id)) {
-            id = myCollectionId;
+        } else if ("qianzan".equals(idStr)) {
+            idStr = myCollectionId;
         }
-        articleService.doJob(id);
+        String[] ids=idStr.split(",");
+        for (String id : ids) {
+            articleService.doJob(id);
+        }
         long t2 = System.currentTimeMillis();
-        responseDto.setResult("专题" + id + "爬取完毕!");
+        responseDto.setResult("专题" + Arrays.toString(ids) + "爬取完毕!");
         responseDto.setTime((t2 - t1) / 1000.0);
         lg.info(responseDto.toString());
         return responseDto;
