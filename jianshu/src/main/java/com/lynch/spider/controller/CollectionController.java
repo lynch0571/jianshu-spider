@@ -24,7 +24,7 @@ import com.lynch.spider.service.ArticleService;
  * @date 2017年3月9日
  */
 @RestController
-@RequestMapping("c")
+@RequestMapping("/")
 public class CollectionController {
 
     private Logger lg = LoggerFactory.getLogger(CollectionController.class);
@@ -41,15 +41,21 @@ public class CollectionController {
     @Autowired
     private ResponseDto responseDto;
 
+    /**
+     * @param idStr     特殊参数:my为千赞专题，all为配置文件中所有的专题
+     * @return
+     */
     @RequestMapping(value = "craw/{idStr}", method = RequestMethod.GET)
     private ResponseDto crawlMyArticle(@PathVariable("idStr") String idStr) {
         long t1 = System.currentTimeMillis();
         if (StringUtils.isEmpty(idStr)) {
             responseDto.setResult("专题Id为空");
-        } else if ("qianzan".equals(idStr)) {
+        } else if ("my".equals(idStr)) {
             idStr = myCollectionId;
+        } else if ("all".equals(idStr)) {
+            idStr = collectionIds;
         }
-        String[] ids=idStr.split(",");
+        String[] ids = idStr.split(",");
         for (String id : ids) {
             articleService.doJob(id);
         }
