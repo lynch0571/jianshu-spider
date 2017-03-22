@@ -4,6 +4,8 @@
 package com.lynch.spider.controller;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lynch.spider.dto.ResponseDto;
 import com.lynch.spider.service.ArticleService;
+import com.lynch.spider.task.CollectionTask;
 
 /**
  * @Description TODO
@@ -35,6 +38,9 @@ public class CollectionController {
     @Value("${spider.myCollectionId}")
     private String myCollectionId;
 
+    @Value("${spider.threadSize:20}")
+    private int threadSize;
+
     @Autowired
     private ArticleService articleService;
 
@@ -42,7 +48,8 @@ public class CollectionController {
     private ResponseDto responseDto;
 
     /**
-     * @param idStr     特殊参数:my为千赞专题，all为配置文件中所有的专题
+     * @param idStr
+     *            特殊参数:my为千赞专题，all为配置文件中所有的专题
      * @return
      */
     @RequestMapping(value = "craw/{idStr}", method = RequestMethod.GET)
@@ -56,8 +63,22 @@ public class CollectionController {
             idStr = collectionIds;
         }
         String[] ids = idStr.split(",");
+        ExecutorService pool = Executors.newFixedThreadPool(threadSize);
         for (String id : ids) {
-            articleService.doJob(id);
+            pool.execute(new CollectionTask(articleService, id));
+        }
+        pool.shutdown();
+        while (true) {
+            if (pool.isTerminated()) {
+                break;
+            } else {
+                try {
+                    lg.warn("线程池还有未执行完毕的线程...");
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         long t2 = System.currentTimeMillis();
         responseDto.setResult("专题" + Arrays.toString(ids) + "爬取完毕!");
