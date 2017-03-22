@@ -112,4 +112,12 @@ public class Collection {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "Collection [id=" + id + ", name=" + name + ", url=" + url + ", admin=" + admin + ", imgUrl=" + imgUrl + ", description=" + description
+                + ", articleCount=" + articleCount + ", fansCount=" + fansCount + ", lastCollectTime=" + lastCollectTime + ", createTime=" + createTime
+                + ", updateTime=" + updateTime + "]";
+    }
+    
 }
