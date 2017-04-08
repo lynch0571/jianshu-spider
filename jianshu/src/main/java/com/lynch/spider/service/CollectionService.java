@@ -23,6 +23,10 @@ public class CollectionService {
     @Autowired
     private CollectionMapper collectionMapper;
 
+    public List<String> getAllIds() {
+        return collectionMapper.selectAllIds();
+    }
+    
     public void doJob() {
         Long start = System.currentTimeMillis();
         lg.info("{} start.", Thread.currentThread().getName());

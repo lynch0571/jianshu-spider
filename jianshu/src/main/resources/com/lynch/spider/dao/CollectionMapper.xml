@@ -14,6 +14,14 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  
+  <select id="selectAllIds" resultType="String">
+    SELECT
+	    SUBSTRING_INDEX(url, '/' ,- 1)
+	FROM
+	    collection
+  </select>
+  
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

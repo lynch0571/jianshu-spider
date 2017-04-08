@@ -4,6 +4,7 @@
 package com.lynch.spider.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lynch.spider.dto.ResponseDto;
 import com.lynch.spider.service.ArticleService;
+import com.lynch.spider.service.CollectionService;
 import com.lynch.spider.task.CollectionTask;
 
 /**
@@ -45,6 +47,9 @@ public class ArticleController {
     private ArticleService articleService;
 
     @Autowired
+    private CollectionService collectionService;
+
+    @Autowired
     private ResponseDto responseDto;
 
     /**
@@ -55,17 +60,23 @@ public class ArticleController {
     @RequestMapping(value = "craw/{idStr}", method = RequestMethod.GET)
     private ResponseDto crawlMyArticle(@PathVariable("idStr") String idStr) {
         long t1 = System.currentTimeMillis();
+        Object[] ids = null;
         if (StringUtils.isEmpty(idStr)) {
             responseDto.setResult("专题Id为空");
         } else if ("my".equals(idStr)) {
-            idStr = myCollectionId;
+            ids = myCollectionId.split(",");
         } else if ("all".equals(idStr)) {
-            idStr = collectionIds;
+            ids = collectionIds.split(",");
+        } else if ("db".equals(idStr)) {
+            List<String> list = collectionService.getAllIds();
+            list.remove(myCollectionId);
+            list.add(myCollectionId);
+            ids = list.toArray();
         }
-        String[] ids = idStr.split(",");
+
         ExecutorService pool = Executors.newFixedThreadPool(threadSize);
-        for (String id : ids) {
-            pool.execute(new CollectionTask(articleService, id));
+        for (Object id : ids) {
+            pool.execute(new CollectionTask(articleService, id.toString()));
         }
         pool.shutdown();
         while (true) {

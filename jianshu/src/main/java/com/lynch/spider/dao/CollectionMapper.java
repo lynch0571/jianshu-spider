@@ -17,6 +17,8 @@ public interface CollectionMapper {
     int insertSelective(Collection record);
 
     List<Collection> selectByExample(CollectionExample example);
+    
+    List<String> selectAllIds();
 
     Collection selectByPrimaryKey(Integer id);
 
