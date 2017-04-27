@@ -57,7 +57,7 @@ public class ArticleController {
      *            特殊参数:my为千赞专题，all为配置文件中所有的专题
      * @return
      */
-    @RequestMapping(value = "craw/{idStr}", method = RequestMethod.GET)
+    @RequestMapping(value = "crawl/{idStr}", method = RequestMethod.GET)
     private ResponseDto crawlMyArticle(@PathVariable("idStr") String idStr) {
         long t1 = System.currentTimeMillis();
         Object[] ids = null;

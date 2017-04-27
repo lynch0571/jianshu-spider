@@ -30,7 +30,7 @@ public class CollectionController {
     @Autowired
     private ResponseDto responseDto;
 
-    @RequestMapping(value = "craw", method = RequestMethod.GET)
+    @RequestMapping(value = "crawl", method = RequestMethod.GET)
     private ResponseDto crawlMyArticle() {
         long t1 = System.currentTimeMillis();
         collectionService.doJob();
