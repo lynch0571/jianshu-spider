@@ -95,6 +95,7 @@ public class ArticleController {
         responseDto.setResult("专题" + Arrays.toString(ids) + "爬取完毕!");
         responseDto.setTime((t2 - t1) / 1000.0);
         lg.info(responseDto.toString());
+        lg.info(articleService.getArticleHtml());
         return responseDto;
     }
 
